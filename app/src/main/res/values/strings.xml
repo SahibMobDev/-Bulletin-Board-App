@@ -13,4 +13,14 @@
     <string name="ac_sign_out">Выход</string>
     <string name="open">open</string>
     <string name="close">close</string>
+
+    <!-- Menu Drawer Strings -->
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="sign_up_action">Зарегистрироваться</string>
+    <string name="sign_in_action">Войти</string>
+    <string name="forget_password">Забыли пароль?</string>
+    <string name="sign_up_error">Не удалось зарегистрироваться</string>
+    <string name="send_verification_error">Не удалось отправить email для подтверждения!</string>
+    <string name="send_verification_done">На вашу почту отправлено письмо с подтверждением, пожалуйста подтвердите ваш аккаунт.</string>
 </resources>

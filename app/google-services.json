@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "544884903918",
+    "project_id": "bulletinboardapp-c8623",
+    "storage_bucket": "bulletinboardapp-c8623.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544884903918:android:6b087b09e15a58b96e88ff",
+        "android_client_info": {
+          "package_name": "com.github.sahibmobdev.bulletinboardapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "544884903918-162ckid75b6mkakqsfui7u4r00o6rhuj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP6UC2zHVx_J0p5JwUwmWeI_h6SaL5rco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "544884903918-162ckid75b6mkakqsfui7u4r00o6rhuj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
