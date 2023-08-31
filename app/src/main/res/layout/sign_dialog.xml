@@ -39,7 +39,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/password_hint"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
         app:layout_constraintStart_toStartOf="@+id/edSignEmail"

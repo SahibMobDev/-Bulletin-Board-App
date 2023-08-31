@@ -3,6 +3,7 @@ package com.github.sahibmobdev.bulletinboardapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -12,11 +13,13 @@ import com.github.sahibmobdev.bulletinboardapp.dialoghelper.DialogConst.SIGN_UP_
 import com.github.sahibmobdev.bulletinboardapp.dialoghelper.DialogHelper
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     lateinit var binding: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
+    lateinit var tvAccount: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +28,19 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         init()
     }
 
+    override fun onStart() {
+        super.onStart()
+        uiUpdate(mAuth.currentUser)
+    }
+
     private fun init() {
+
         binding.apply {
             val toggle = ActionBarDrawerToggle(this@MainActivity,drawerLayout,mainContent.myToolbar,R.string.open, R.string.close)
             drawerLayout.addDrawerListener(toggle)
             toggle.syncState()
             navView.setNavigationItemSelectedListener(this@MainActivity)
+            tvAccount = binding.navView.getHeaderView(0).findViewById(R.id.tvAccoutnEmail)
         }
     }
 
@@ -58,11 +68,20 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
                 dialogHelper.createSignDialog(SIGN_IN_STATE)
             }
             R.id.id_sign_out -> {
-                Toast.makeText(this, "id_sign_out", Toast.LENGTH_SHORT).show()
+                uiUpdate(null)
+                mAuth.signOut()
             }
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun uiUpdate(user: FirebaseUser?) {
+        tvAccount.text = if (user == null) {
+            resources.getString(R.string.not_reg)
+        } else {
+            user.email
+        }
     }
 }
