@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "544884903918-162ckid75b6mkakqsfui7u4r00o6rhuj.apps.googleusercontent.com",
+          "client_id": "544884903918-c8a63glrctm2d9d2vtlu6lesudfs8oo4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.sahibmobdev.bulletinboardapp",
+            "certificate_hash": "dd2cc64b01a7cd3e751b9ad420e69534517e5370"
+          }
+        },
+        {
+          "client_id": "544884903918-7m0iol0q5laq0nlje1qrg3m95aq9bru2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
