@@ -9,6 +9,8 @@ import com.github.sahibmobdev.bulletinboardapp.dialoghelper.GoogleAccConst
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.EmailAuthCredential
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
@@ -32,7 +34,9 @@ class AccountHelper(private val act: MainActivity) {
                     if (task.exception is FirebaseAuthUserCollisionException) {
                         val exception = task.exception as FirebaseAuthUserCollisionException
                         if (exception.errorCode == FirebaseAuthConstants.ERROR_EMAIL_ALREADY_IN_USE) {
-                            Toast.makeText(act, FirebaseAuthConstants.ERROR_EMAIL_ALREADY_IN_USE, Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(act, FirebaseAuthConstants.ERROR_EMAIL_ALREADY_IN_USE, Toast.LENGTH_SHORT).show()
+                            //Link email
+                            linkEmailToG(email, password)
                         }
                     } else if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         val exception = task.exception as FirebaseAuthInvalidCredentialsException
@@ -75,6 +79,21 @@ class AccountHelper(private val act: MainActivity) {
                     }
                 }
             }
+        }
+    }
+
+    private fun linkEmailToG(email: String, password: String) {
+        if (act.mAuth.currentUser != null) {
+            val credential = EmailAuthProvider.getCredential(email, password)
+            act.mAuth.currentUser?.linkWithCredential(credential)?.addOnCompleteListener {task ->
+
+                if (task.isSuccessful) {
+                    Toast.makeText(act, R.string.link_done, Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        } else {
+            Toast.makeText(act, R.string.enter_to_G, Toast.LENGTH_SHORT).show()
         }
     }
 
