@@ -9,9 +9,9 @@ import com.github.sahibmobdev.bulletinboardapp.dialoghelper.GoogleAccConst
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.EmailAuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
@@ -75,6 +75,11 @@ class AccountHelper(private val act: MainActivity) {
                             Toast.makeText(act, FirebaseAuthConstants.ERROR_INVALID_EMAIL, Toast.LENGTH_SHORT).show()
                         } else if (exception.errorCode == FirebaseAuthConstants.ERROR_WRONG_PASSWORD) {
                             Toast.makeText(act, FirebaseAuthConstants.ERROR_WRONG_PASSWORD, Toast.LENGTH_SHORT).show()
+                        } else if (task.exception is FirebaseAuthInvalidUserException) {
+                            val exception1 = task.exception as FirebaseAuthInvalidUserException
+                            if (exception1.errorCode == FirebaseAuthConstants.ERROR_USER_NOT_FOUND) {
+                                Toast.makeText(act, exception.message, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
@@ -108,6 +113,10 @@ class AccountHelper(private val act: MainActivity) {
         signInClient = getSignInClient()
         val intent = signInClient.signInIntent
         act.startActivityForResult(intent, GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE)
+    }
+
+    fun signOutG() {
+        getSignInClient().signOut()
     }
 
     fun signInFirebaseWithGoogle(token: String) {

@@ -4,11 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import com.github.sahibmobdev.bulletinboardapp.activities.EditAdsAct
 import com.github.sahibmobdev.bulletinboardapp.databinding.ActivityMainBinding
 import com.github.sahibmobdev.bulletinboardapp.dialoghelper.DialogConst.SIGN_IN_STATE
 import com.github.sahibmobdev.bulletinboardapp.dialoghelper.DialogConst.SIGN_UP_STATE
@@ -33,6 +35,19 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         init()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.id_new_ads) {
+            val i = Intent(this, EditAdsAct::class.java)
+            startActivity(i)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -55,7 +70,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     }
 
     private fun init() {
-
+        setSupportActionBar(binding.mainContent.myToolbar)
         binding.apply {
             val toggle = ActionBarDrawerToggle(this@MainActivity,drawerLayout,mainContent.myToolbar,R.string.open, R.string.close)
             drawerLayout.addDrawerListener(toggle)
@@ -91,6 +106,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
             R.id.id_sign_out -> {
                 uiUpdate(null)
                 mAuth.signOut()
+                dialogHelper.accHelper.signOutG()
             }
         }
 
