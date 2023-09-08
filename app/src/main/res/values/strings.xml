@@ -31,4 +31,8 @@
     <!-- Sign Dialog -->
     <string name="link_done">Email успешно подключен к Google аккаунту.</string>
     <string name="enter_to_G">У вас уже существует идентичный аккаунт google. Для того чтобы продолжить войдите в аккаунт google.</string>
+
+    <!-- Edit Activity -->
+    <string name="select_country">* Выберите страну</string>
+    <string name="select_city">* Выберите город</string>
 </resources>
