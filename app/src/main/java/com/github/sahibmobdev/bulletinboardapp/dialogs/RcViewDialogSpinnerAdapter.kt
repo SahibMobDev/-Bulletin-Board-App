@@ -6,17 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sahibmobdev.bulletinboardapp.activities.EditAdsAct
 import com.github.sahibmobdev.bulletinboardapp.databinding.SpListItemBinding
 
-class RcViewDialogSpinnerAdapter(var context: Context, var dialog: AlertDialog) : RecyclerView.Adapter<RcViewDialogSpinnerAdapter.SpViewHolder>() {
+class RcViewDialogSpinnerAdapter(var dialog: AlertDialog, var tvSelection: TextView) : RecyclerView.Adapter<RcViewDialogSpinnerAdapter.SpViewHolder>() {
 
     private val mainList = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpViewHolder {
         val view = SpListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SpViewHolder(view, context, dialog)
+        return SpViewHolder(view, dialog, tvSelection)
     }
 
     override fun getItemCount(): Int {
@@ -27,7 +28,7 @@ class RcViewDialogSpinnerAdapter(var context: Context, var dialog: AlertDialog) 
         holder.setData(mainList[position])
     }
 
-    inner class SpViewHolder(private val binding: SpListItemBinding, var context: Context, var dialog: AlertDialog) : RecyclerView.ViewHolder(binding.root), OnClickListener {
+    inner class SpViewHolder(private val binding: SpListItemBinding, var dialog: AlertDialog, tvSelection: TextView) : RecyclerView.ViewHolder(binding.root), OnClickListener {
 
         private var itemText = ""
         fun setData(text: String) {
@@ -37,7 +38,7 @@ class RcViewDialogSpinnerAdapter(var context: Context, var dialog: AlertDialog) 
         }
 
         override fun onClick(v: View?) {
-            (context as EditAdsAct).binding.tvCountry.text = itemText
+            tvSelection.text = itemText
             dialog.dismiss()
         }
     }

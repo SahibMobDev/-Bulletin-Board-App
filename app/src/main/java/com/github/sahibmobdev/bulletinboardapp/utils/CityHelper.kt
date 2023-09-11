@@ -1,6 +1,7 @@
 package com.github.sahibmobdev.bulletinboardapp.utils
 
 import android.content.Context
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.io.InputStream
@@ -24,6 +25,28 @@ object CityHelper {
             }
 
         }catch (e: IOException) {
+
+        }
+        return tempArray
+    }
+
+    fun getAllCities(country: String, context: Context): ArrayList<String> {
+        var tempArray = ArrayList<String>()
+        try {
+
+            val inputStream = context.assets.open("countriesToCities.json")
+            val size = inputStream.available()
+            val byteArray = ByteArray(size)
+            inputStream.read(byteArray)
+
+            val jsonFile = String(byteArray)
+            val jsonObject = JSONObject(jsonFile)
+            val citiesNames = jsonObject.getJSONArray(country)
+
+            for (n in 0 until citiesNames.length()) {
+                tempArray.add(citiesNames.getString(n))
+            }
+        } catch (e: IOException) {
 
         }
         return tempArray
