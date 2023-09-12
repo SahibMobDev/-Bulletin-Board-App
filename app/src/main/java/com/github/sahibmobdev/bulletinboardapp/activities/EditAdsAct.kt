@@ -28,8 +28,8 @@ class EditAdsAct : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && resultCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
+
+        if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
             if (data != null) {
                 val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 Log.d("MyLog2", "Image: ${returnValue?.get(0)}")
@@ -37,6 +37,7 @@ class EditAdsAct : AppCompatActivity() {
                 Log.d("MyLog2", "Image: ${returnValue?.get(2)}")
             }
         }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(
