@@ -12,10 +12,12 @@ import com.fxn.utility.PermUtil
 import com.github.sahibmobdev.bulletinboardapp.R
 import com.github.sahibmobdev.bulletinboardapp.databinding.ActivityEditAdsBinding
 import com.github.sahibmobdev.bulletinboardapp.dialogs.DialogSpinnerHelper
+import com.github.sahibmobdev.bulletinboardapp.fragments.FragmentCloseInterface
+import com.github.sahibmobdev.bulletinboardapp.fragments.ImageListFragment
 import com.github.sahibmobdev.bulletinboardapp.utils.CityHelper
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 
-class EditAdsAct : AppCompatActivity() {
+class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     lateinit var binding: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
@@ -50,7 +52,7 @@ class EditAdsAct : AppCompatActivity() {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
 
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   ImagePicker.getImages(this)
+                   ImagePicker.getImages(this, 3)
                 } else {
 
                     Toast.makeText(
@@ -88,6 +90,13 @@ class EditAdsAct : AppCompatActivity() {
     }
 
     fun onClickGetImages(view: View) {
-        ImagePicker.getImages(this)
+        // ImagePicker.getImages(this)
+        binding.scrollViewMine.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.place_holder, ImageListFragment(this)).commit()
+    }
+
+    override fun onClose() {
+        binding.scrollViewMine.visibility = View.VISIBLE
     }
 }
