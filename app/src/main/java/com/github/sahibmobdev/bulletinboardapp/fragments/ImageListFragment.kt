@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sahibmobdev.bulletinboardapp.R
-import com.github.sahibmobdev.bulletinboardapp.databinding.ListImageFragmentBinding
 import com.github.sahibmobdev.bulletinboardapp.utils.ItemTouchMoveCallback
 
 class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, private val newList: ArrayList<String>) : Fragment() {
@@ -47,7 +46,7 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, 
 
     override fun onDetach() {
         super.onDetach()
-        fragCloseInterface.onClose()
+        fragCloseInterface.onFragClose(adapter.mainArray)
         Log.d("MyLog", "Target pos 0: ${adapter.mainArray[0].title}")
         Log.d("MyLog", "Target pos 1: ${adapter.mainArray[1].title}")
         Log.d("MyLog", "Target pos 2: ${adapter.mainArray[2].title}")

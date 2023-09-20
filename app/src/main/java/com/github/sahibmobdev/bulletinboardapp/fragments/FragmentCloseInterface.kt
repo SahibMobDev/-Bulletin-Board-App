@@ -1,5 +1,5 @@
 package com.github.sahibmobdev.bulletinboardapp.fragments
 
 interface FragmentCloseInterface {
-    fun onClose()
+    fun onFragClose(list: ArrayList<SelectImageItem>)
 }

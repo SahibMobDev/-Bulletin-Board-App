@@ -10,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import com.github.sahibmobdev.bulletinboardapp.R
+import com.github.sahibmobdev.bulletinboardapp.adapters.ImageAdapter
 import com.github.sahibmobdev.bulletinboardapp.databinding.ActivityEditAdsBinding
 import com.github.sahibmobdev.bulletinboardapp.dialogs.DialogSpinnerHelper
 import com.github.sahibmobdev.bulletinboardapp.fragments.FragmentCloseInterface
 import com.github.sahibmobdev.bulletinboardapp.fragments.ImageListFragment
+import com.github.sahibmobdev.bulletinboardapp.fragments.SelectImageItem
 import com.github.sahibmobdev.bulletinboardapp.utils.CityHelper
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 
@@ -21,6 +23,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     lateinit var binding: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
+    private val imageAdapter: ImageAdapter by lazy { ImageAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +72,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun init() {
-
+        binding.vpImages.adapter = imageAdapter
     }
 
     //OnClicks
@@ -96,7 +99,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     }
 
-    override fun onClose() {
+    override fun onFragClose(list: ArrayList<SelectImageItem>) {
         binding.scrollViewMine.visibility = View.VISIBLE
+        imageAdapter.update(list)
     }
 }
