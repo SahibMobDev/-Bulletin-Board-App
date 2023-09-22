@@ -21,6 +21,7 @@ import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
+    private var chooseImageFrag : ImageListFragment? = null
     lateinit var binding: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     private val imageAdapter: ImageAdapter by lazy { ImageAdapter() }
@@ -36,11 +37,19 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
             if (data != null) {
+
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                if (returnValues?.size!! > 1) {
+                if (returnValues?.size!! > 1 && chooseImageFrag == null) {
+
+                    chooseImageFrag = ImageListFragment(this, returnValues)
                     binding.scrollViewMine.visibility = View.GONE
                     val fm = supportFragmentManager.beginTransaction()
-                    fm.replace(R.id.place_holder, ImageListFragment(this, returnValues)).commitAllowingStateLoss()
+                    fm.replace(R.id.place_holder, chooseImageFrag!!).commitAllowingStateLoss()
+
+                } else if (chooseImageFrag != null) {
+
+                    chooseImageFrag?.updateAdapter(returnValues)
+
                 }
             }
         }
@@ -102,5 +111,6 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     override fun onFragClose(list: ArrayList<SelectImageItem>) {
         binding.scrollViewMine.visibility = View.VISIBLE
         imageAdapter.update(list)
+        chooseImageFrag = null
     }
 }
