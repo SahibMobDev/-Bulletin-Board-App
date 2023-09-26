@@ -3,7 +3,6 @@ package com.github.sahibmobdev.bulletinboardapp.activities
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,6 @@ import com.github.sahibmobdev.bulletinboardapp.databinding.ActivityEditAdsBindin
 import com.github.sahibmobdev.bulletinboardapp.dialogs.DialogSpinnerHelper
 import com.github.sahibmobdev.bulletinboardapp.fragments.FragmentCloseInterface
 import com.github.sahibmobdev.bulletinboardapp.fragments.ImageListFragment
-import com.github.sahibmobdev.bulletinboardapp.fragments.SelectImageItem
 import com.github.sahibmobdev.bulletinboardapp.utils.CityHelper
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 
@@ -41,10 +39,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 if (returnValues?.size!! > 1 && chooseImageFrag == null) {
 
-                    chooseImageFrag = ImageListFragment(this, returnValues)
-                    binding.scrollViewMine.visibility = View.GONE
-                    val fm = supportFragmentManager.beginTransaction()
-                    fm.replace(R.id.place_holder, chooseImageFrag!!).commitAllowingStateLoss()
+                    openChooseImageFragment(returnValues)
 
                 } else if (chooseImageFrag != null) {
 
@@ -104,13 +99,24 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View) {
-        ImagePicker.getImages(this, 3)
-
+        val list = imageAdapter.mainArray
+        if (list.size == 0) {
+            ImagePicker.getImages(this, 3)
+        } else {
+            openChooseImageFragment(list)
+        }
     }
 
-    override fun onFragClose(list: ArrayList<SelectImageItem>) {
+    override fun onFragClose(list: ArrayList<String>) {
         binding.scrollViewMine.visibility = View.VISIBLE
         imageAdapter.update(list)
         chooseImageFrag = null
+    }
+
+    private fun openChooseImageFragment(newList: ArrayList<String>) {
+        chooseImageFrag = ImageListFragment(this, newList)
+        binding.scrollViewMine.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.place_holder, chooseImageFrag!!).commitAllowingStateLoss()
     }
 }

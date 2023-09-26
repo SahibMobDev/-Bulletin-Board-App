@@ -4,13 +4,11 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.github.sahibmobdev.bulletinboardapp.databinding.ImageAdapterItemBinding
-import com.github.sahibmobdev.bulletinboardapp.fragments.SelectImageItem
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
 
-    private val mainArray = ArrayList<SelectImageItem>()
+     val mainArray = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = ImageAdapterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,7 +20,7 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
     }
 
     override fun onBindViewHolder(holder: ImageHolder, position: Int) {
-        holder.setData(mainArray[position].imageUri)
+        holder.setData(mainArray[position])
     }
 
     class ImageHolder(private val binding: ImageAdapterItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -31,7 +29,7 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
         }
     }
 
-    fun update(newList: ArrayList<SelectImageItem>) {
+    fun update(newList: ArrayList<String>) {
         mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()
