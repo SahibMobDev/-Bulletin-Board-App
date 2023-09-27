@@ -23,6 +23,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var binding: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     private val imageAdapter: ImageAdapter by lazy { ImageAdapter() }
+    var editImagePos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
             if (data != null) {
@@ -47,8 +49,13 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                 }
             }
+        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE) {
+            if (data != null) {
+                val uris = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                chooseImageFrag?.setSingleImage(uris?.get(0)!!, editImagePos)
+            }
         }
-        super.onActivityResult(requestCode, resultCode, data)
+
     }
 
     override fun onRequestPermissionsResult(
@@ -61,7 +68,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
 
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   ImagePicker.getImages(this, 3)
+                   ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
                 } else {
 
                     Toast.makeText(
@@ -101,7 +108,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     fun onClickGetImages(view: View) {
         val list = imageAdapter.mainArray
         if (list.size == 0) {
-            ImagePicker.getImages(this, 3)
+            ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
         } else {
             openChooseImageFragment(list)
         }
