@@ -39,9 +39,14 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
             if (data != null) {
 
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+
                 if (returnValues?.size!! > 1 && chooseImageFrag == null) {
 
                     openChooseImageFragment(returnValues)
+
+                } else if (returnValues.size == 1 && chooseImageFrag == null) {
+
+                    imageAdapter.update(returnValues)
 
                 } else if (chooseImageFrag != null) {
 
