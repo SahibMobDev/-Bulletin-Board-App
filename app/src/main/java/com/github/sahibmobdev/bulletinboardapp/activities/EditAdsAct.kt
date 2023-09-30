@@ -3,6 +3,7 @@ package com.github.sahibmobdev.bulletinboardapp.activities
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.github.sahibmobdev.bulletinboardapp.dialogs.DialogSpinnerHelper
 import com.github.sahibmobdev.bulletinboardapp.fragments.FragmentCloseInterface
 import com.github.sahibmobdev.bulletinboardapp.fragments.ImageListFragment
 import com.github.sahibmobdev.bulletinboardapp.utils.CityHelper
+import com.github.sahibmobdev.bulletinboardapp.utils.ImageManager
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
@@ -46,7 +48,10 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                 } else if (returnValues.size == 1 && chooseImageFrag == null) {
 
-                    imageAdapter.update(returnValues)
+                    //imageAdapter.update(returnValues)
+                    val tempList = ImageManager.getImageSize(returnValues[0])
+                    Log.d("MyLog", "Image width is: ${tempList[0]}")
+                    Log.d("MyLog", "Image height is: ${tempList[1]}")
 
                 } else if (chooseImageFrag != null) {
 
