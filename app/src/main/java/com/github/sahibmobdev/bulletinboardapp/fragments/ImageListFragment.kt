@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sahibmobdev.bulletinboardapp.R
 import com.github.sahibmobdev.bulletinboardapp.databinding.ListImageFragmentBinding
+import com.github.sahibmobdev.bulletinboardapp.utils.ImageManager
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker.MAX_IMAGE_COUNT
 import com.github.sahibmobdev.bulletinboardapp.utils.ItemTouchMoveCallback
@@ -36,8 +37,9 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, 
         touchHelper.attachToRecyclerView(binding.rcViewSelectImage)
         binding.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
         binding.rcViewSelectImage.adapter = adapter
+        ImageManager.imageResize(newList)
+        //adapter.updateAdapter(newList, true)
 
-        adapter.updateAdapter(newList, true)
 
     }
 
