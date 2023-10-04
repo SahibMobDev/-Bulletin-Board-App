@@ -16,12 +16,17 @@ import com.github.sahibmobdev.bulletinboardapp.utils.ImageManager
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker.MAX_IMAGE_COUNT
 import com.github.sahibmobdev.bulletinboardapp.utils.ItemTouchMoveCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, private val newList: ArrayList<String>) : Fragment() {
     lateinit var binding: ListImageFragmentBinding
     val adapter = SelectImageRvAdapter()
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
+    lateinit var job: Job
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +42,10 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, 
         touchHelper.attachToRecyclerView(binding.rcViewSelectImage)
         binding.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
         binding.rcViewSelectImage.adapter = adapter
-        ImageManager.imageResize(newList)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val text = ImageManager.imageResize(newList)
+            Log.d("MyLog", "Result: $text")
+        }
         //adapter.updateAdapter(newList, true)
 
 
@@ -46,6 +54,7 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, 
     override fun onDetach() {
         super.onDetach()
         fragCloseInterface.onFragClose(adapter.mainArray)
+        job.cancel()
     }
 
     private fun setUpToolbar() {
