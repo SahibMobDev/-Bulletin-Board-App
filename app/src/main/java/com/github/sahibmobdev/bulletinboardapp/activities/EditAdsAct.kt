@@ -2,6 +2,7 @@ package com.github.sahibmobdev.bulletinboardapp.activities
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,7 +22,7 @@ import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
-    private var chooseImageFrag : ImageListFragment? = null
+    private var chooseImageFrag: ImageListFragment? = null
     lateinit var binding: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     private val imageAdapter: ImageAdapter by lazy { ImageAdapter() }
@@ -46,14 +47,14 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                     openChooseImageFragment(returnValues)
 
-                } else if (returnValues.size == 1 && chooseImageFrag == null) {
+                } /*else if (returnValues.size == 1 && chooseImageFrag == null) {
 
                     //imageAdapter.update(returnValues)
                     val tempList = ImageManager.getImageSize(returnValues[0])
                     Log.d("MyLog", "Image width is: ${tempList[0]}")
                     Log.d("MyLog", "Image height is: ${tempList[1]}")
 
-                } else if (chooseImageFrag != null) {
+                }*/ else if (chooseImageFrag != null) {
 
                     chooseImageFrag?.updateAdapter(returnValues)
 
@@ -74,11 +75,11 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
+        when (requestCode) {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
 
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
+                    ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
                 } else {
 
                     Toast.makeText(
@@ -97,7 +98,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     //OnClicks
-    fun onClickSelectCountry(view:View) {
+    fun onClickSelectCountry(view: View) {
         val listOfCountry = CityHelper.getAllCountries(this)
         if (binding.tvCity.text.toString() != getString(R.string.select_city)) {
             binding.tvCity.text = getString(R.string.select_country)
@@ -105,10 +106,10 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         dialog.showSpinnerDialog(this, listOfCountry, binding.tvCountry)
     }
 
-    fun onClickSelectCity(view:View) {
+    fun onClickSelectCity(view: View) {
         val selectedCountry = binding.tvCountry.text.toString()
         if (selectedCountry != getString(R.string.select_country)) {
-            val listOfCities = CityHelper.getAllCities(selectedCountry,this)
+            val listOfCities = CityHelper.getAllCities(selectedCountry, this)
             dialog.showSpinnerDialog(this, listOfCities, binding.tvCity)
         } else {
             Toast.makeText(this, "Choice country first", Toast.LENGTH_SHORT).show()
@@ -120,17 +121,18 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         if (list.size == 0) {
             ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
         } else {
-            openChooseImageFragment(list)
+            openChooseImageFragment(null)
+            chooseImageFrag?.updateAdapterFromEdit(list)
         }
     }
 
-    override fun onFragClose(list: ArrayList<String>) {
+    override fun onFragClose(list: ArrayList<Bitmap>) {
         binding.scrollViewMine.visibility = View.VISIBLE
         imageAdapter.update(list)
         chooseImageFrag = null
     }
 
-    private fun openChooseImageFragment(newList: ArrayList<String>) {
+    private fun openChooseImageFragment(newList: ArrayList<String>?) {
         chooseImageFrag = ImageListFragment(this, newList)
         binding.scrollViewMine.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()

@@ -1,6 +1,6 @@
 package com.github.sahibmobdev.bulletinboardapp.adapters
 
-import android.net.Uri
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +8,7 @@ import com.github.sahibmobdev.bulletinboardapp.databinding.ImageAdapterItemBindi
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
 
-     val mainArray = ArrayList<String>()
+     val mainArray = ArrayList<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = ImageAdapterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,12 +24,12 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
     }
 
     class ImageHolder(private val binding: ImageAdapterItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun setData(uri: String) {
-            binding.imItem.setImageURI(Uri.parse(uri))
+        fun setData(bitmap: Bitmap) {
+            binding.imItem.setImageBitmap(bitmap)
         }
     }
 
-    fun update(newList: ArrayList<String>) {
+    fun update(newList: ArrayList<Bitmap>) {
         mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()
