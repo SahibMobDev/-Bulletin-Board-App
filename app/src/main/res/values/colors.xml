@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <!--<color name="blue_light">#3f497a</color>-->
     <color name="blue_light">#6750A4</color>
+    <color name="green_mine">#43A047</color>
+    <color name="gray">#E4E6E4</color>
+    <color name="gray_dark">#CDCFCD</color>
 </resources>

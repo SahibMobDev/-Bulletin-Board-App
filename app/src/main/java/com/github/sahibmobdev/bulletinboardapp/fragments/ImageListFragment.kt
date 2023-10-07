@@ -75,7 +75,7 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, 
 
     private fun setUpToolbar() {
         binding.tb.inflateMenu(R.menu.menu_choose_image)
-        binding.tb.navigationIcon?.mutate()?.setTint(ContextCompat.getColor(requireContext(), R.color.white))
+        //binding.tb.navigationIcon?.mutate()?.setTint(ContextCompat.getColor(requireContext(), R.color.green_mine))
         val deleteItem = binding.tb.menu.findItem(R.id.id_delete_image)
         val addImageItem = binding.tb.menu.findItem(R.id.id_add_image)
 
