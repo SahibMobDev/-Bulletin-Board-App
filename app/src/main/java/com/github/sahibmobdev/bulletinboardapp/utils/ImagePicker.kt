@@ -31,7 +31,7 @@ object ImagePicker {
 
     fun showSelectedImages(resultCode: Int, requestCode: Int, data: Intent?, edAct: EditAdsAct) {
 
-        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
+        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REQUEST_CODE_GET_IMAGES) {
             if (data != null) {
 
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)

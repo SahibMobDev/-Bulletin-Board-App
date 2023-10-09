@@ -3,6 +3,7 @@ package com.github.sahibmobdev.bulletinboardapp.utils
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.ImageView
 import androidx.exifinterface.media.ExifInterface
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +41,14 @@ object ImageManager {
             0
         }
         return rotation
+    }
+
+    fun chooseScaleType(im: ImageView, bitmap: Bitmap) {
+        if (bitmap.width > bitmap.height) {
+            im.scaleType = ImageView.ScaleType.CENTER_CROP
+        } else {
+            im.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        }
     }
 
     suspend fun imageResize(uris: List<String>): List<Bitmap> = withContext(Dispatchers.IO) {
