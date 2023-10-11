@@ -28,28 +28,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, private val newList: ArrayList<String>?) : Fragment(), AdapterCallback {
-    lateinit var binding: ListImageFragmentBinding
+class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, private val newList: ArrayList<String>?) : BaseSelectImageFragment(), AdapterCallback {
+
     val adapter = SelectImageRvAdapter(this)
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
     var job: Job? = null
     private var addImageItem: MenuItem? = null
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = ListImageFragmentBinding.inflate(inflater)
-        return binding.root
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
-        touchHelper.attachToRecyclerView(binding.rcViewSelectImage)
-        binding.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
-        binding.rcViewSelectImage.adapter = adapter
+        binding.apply {
+            touchHelper.attachToRecyclerView(rcViewSelectImage)
+            rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
+            rcViewSelectImage.adapter = adapter
+        }
 
         if (newList != null) {
             resizeSelectedImages(newList, true)
@@ -82,23 +77,30 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, 
     }
 
     private fun setUpToolbar() {
-        binding.tb.inflateMenu(R.menu.menu_choose_image)
-        //binding.tb.navigationIcon?.mutate()?.setTint(ContextCompat.getColor(requireContext(), R.color.green_mine))
-        val deleteItem = binding.tb.menu.findItem(R.id.id_delete_image)
-        addImageItem = binding.tb.menu.findItem(R.id.id_add_image)
+        binding.apply {
 
-        binding.tb.setNavigationOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
-        }
-        deleteItem.setOnMenuItemClickListener {
-            adapter.updateAdapter(ArrayList(), true)
-            addImageItem?.isVisible = true
-            true
-        }
-        addImageItem?.setOnMenuItemClickListener {
-            val imageCount = MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.getImages(activity as AppCompatActivity, imageCount, ImagePicker.REQUEST_CODE_GET_IMAGES)
-            true
+            tb.inflateMenu(R.menu.menu_choose_image)
+            //binding.tb.navigationIcon?.mutate()?.setTint(ContextCompat.getColor(requireContext(), R.color.green_mine))
+            val deleteItem = tb.menu.findItem(R.id.id_delete_image)
+            addImageItem = tb.menu.findItem(R.id.id_add_image)
+
+            tb.setNavigationOnClickListener {
+                activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
+            }
+            deleteItem.setOnMenuItemClickListener {
+                adapter.updateAdapter(ArrayList(), true)
+                addImageItem?.isVisible = true
+                true
+            }
+            addImageItem?.setOnMenuItemClickListener {
+                val imageCount = MAX_IMAGE_COUNT - adapter.mainArray.size
+                ImagePicker.getImages(
+                    activity as AppCompatActivity,
+                    imageCount,
+                    ImagePicker.REQUEST_CODE_GET_IMAGES
+                )
+                true
+            }
         }
     }
 

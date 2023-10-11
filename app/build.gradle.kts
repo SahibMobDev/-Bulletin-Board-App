@@ -56,6 +56,8 @@ dependencies {
     //Picasso
     implementation ("com.squareup.picasso:picasso:2.8")
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    //AdMob
+    implementation ("com.google.android.gms:play-services-ads:22.4.0")
 
 }
