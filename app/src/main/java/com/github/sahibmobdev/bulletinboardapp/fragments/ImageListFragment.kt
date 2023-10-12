@@ -3,16 +3,13 @@ package com.github.sahibmobdev.bulletinboardapp.fragments
 import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sahibmobdev.bulletinboardapp.R
@@ -28,13 +25,25 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, private val newList: ArrayList<String>?) : BaseSelectImageFragment(), AdapterCallback {
+class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, private val newList: ArrayList<String>?) : BaseAdsFragment(), AdapterCallback {
 
     val adapter = SelectImageRvAdapter(this)
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
     var job: Job? = null
     private var addImageItem: MenuItem? = null
+
+    lateinit var binding: ListImageFragmentBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = ListImageFragmentBinding.inflate(inflater)
+        adView = binding.adView
+        return binding.root
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,6 +75,12 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, 
         job?.cancel()
     }
 
+    override fun onClose() {
+        super.onClose()
+        activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
+
+    }
+
     private fun resizeSelectedImages(newList: ArrayList<String>, needClear: Boolean) {
         job = CoroutineScope(Dispatchers.Main).launch {
             val dialog = ProgressDialog.createProgressDialog(activity as Activity)
@@ -85,7 +100,7 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface, 
             addImageItem = tb.menu.findItem(R.id.id_add_image)
 
             tb.setNavigationOnClickListener {
-                activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
+                showInterAd()
             }
             deleteItem.setOnMenuItemClickListener {
                 adapter.updateAdapter(ArrayList(), true)

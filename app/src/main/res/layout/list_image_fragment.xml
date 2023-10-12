@@ -9,7 +9,7 @@
         android:id="@+id/adView"
         android:layout_width="0dp"
         app:adSize="BANNER"
-        app:adUnitId="@string/ad_id"
+        app:adUnitId="@string/ad_banner_id"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
