@@ -51,7 +51,10 @@ open class BaseAdsFragment: Fragment(), InterAdsClose{
 
     private fun loadInterAd() {
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(context as Activity, getString(R.string.ad_interstitial_id), adRequest, object : InterstitialAdLoadCallback() {
+        InterstitialAd.load(context as Activity,
+            getString(R.string.ad_interstitial_id),
+            adRequest,
+            object : InterstitialAdLoadCallback() {
             override fun onAdLoaded(ad: InterstitialAd) {
                 interAd = ad
             }
