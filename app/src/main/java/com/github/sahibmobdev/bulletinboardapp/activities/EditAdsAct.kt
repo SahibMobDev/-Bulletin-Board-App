@@ -12,6 +12,7 @@ import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import com.github.sahibmobdev.bulletinboardapp.R
 import com.github.sahibmobdev.bulletinboardapp.adapters.ImageAdapter
+import com.github.sahibmobdev.bulletinboardapp.database.DbManager
 import com.github.sahibmobdev.bulletinboardapp.databinding.ActivityEditAdsBinding
 import com.github.sahibmobdev.bulletinboardapp.dialogs.DialogSpinnerHelper
 import com.github.sahibmobdev.bulletinboardapp.fragments.FragmentCloseInterface
@@ -104,6 +105,11 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
             openChooseImageFragment(null)
             chooseImageFrag?.updateAdapterFromEdit(list)
         }
+    }
+
+    fun onClickPublish(view: View) {
+        val dbManager = DbManager()
+        dbManager.publishAd()
     }
 
     override fun onFragClose(list: ArrayList<Bitmap>) {
