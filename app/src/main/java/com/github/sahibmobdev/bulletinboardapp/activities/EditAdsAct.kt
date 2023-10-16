@@ -12,6 +12,7 @@ import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import com.github.sahibmobdev.bulletinboardapp.R
 import com.github.sahibmobdev.bulletinboardapp.adapters.ImageAdapter
+import com.github.sahibmobdev.bulletinboardapp.data.Advert
 import com.github.sahibmobdev.bulletinboardapp.database.DbManager
 import com.github.sahibmobdev.bulletinboardapp.databinding.ActivityEditAdsBinding
 import com.github.sahibmobdev.bulletinboardapp.dialogs.DialogSpinnerHelper
@@ -26,6 +27,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     var chooseImageFrag: ImageListFragment? = null
     lateinit var binding: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
+    private val dbManager = DbManager()
     val imageAdapter: ImageAdapter by lazy { ImageAdapter() }
     var editImagePos = 0
 
@@ -108,8 +110,23 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickPublish(view: View) {
-        val dbManager = DbManager()
-        dbManager.publishAd()
+
+        dbManager.publishAd(fillAd())
+    }
+
+    fun fillAd(): Advert {
+        val ad: Advert
+        binding.apply {
+            ad = Advert(tvCountry.text.toString(),
+                tvCity.text.toString(),
+                editTel.text.toString(),
+                edIndex.text.toString(),
+                checkBoxWithSend.isChecked.toString(),
+                tvCat.text.toString(),
+                edPrice.text.toString(),
+                edDescription.text.toString(),dbManager.db.push().key)
+        }
+        return ad
     }
 
     override fun onFragClose(list: ArrayList<Bitmap>) {

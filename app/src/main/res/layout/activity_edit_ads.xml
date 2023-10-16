@@ -159,7 +159,7 @@
                         android:background="@null"
                         android:ems="10"
                         android:hint="@string/tel_number"
-                        android:inputType="number"
+                        android:inputType="phone"
                         android:padding="10dp"
                         android:textColorHint="@color/gray_dark" />
 
