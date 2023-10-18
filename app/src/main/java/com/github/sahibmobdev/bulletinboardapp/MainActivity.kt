@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.github.sahibmobdev.bulletinboardapp.activities.EditAdsAct
+import com.github.sahibmobdev.bulletinboardapp.database.DbManager
 import com.github.sahibmobdev.bulletinboardapp.databinding.ActivityMainBinding
 import com.github.sahibmobdev.bulletinboardapp.dialoghelper.DialogConst.SIGN_IN_STATE
 import com.github.sahibmobdev.bulletinboardapp.dialoghelper.DialogConst.SIGN_UP_STATE
@@ -26,13 +27,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     lateinit var binding: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
+    val dbManager = DbManager()
     lateinit var tvAccount: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        dbManager.readDataFromDb()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
