@@ -124,7 +124,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 checkBoxWithSend.isChecked.toString(),
                 tvCat.text.toString(),
                 edPrice.text.toString(),
-                edDescription.text.toString(),dbManager.db.push().key)
+                edDescription.text.toString(),
+                dbManager.db.push().key)
         }
         return ad
     }
