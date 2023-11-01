@@ -27,7 +27,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     var chooseImageFrag: ImageListFragment? = null
     lateinit var binding: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
-    private val dbManager = DbManager()
+    private val dbManager = DbManager(null)
     val imageAdapter: ImageAdapter by lazy { ImageAdapter() }
     var editImagePos = 0
 
@@ -123,6 +123,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 edIndex.text.toString(),
                 checkBoxWithSend.isChecked.toString(),
                 tvCat.text.toString(),
+                edTitle.text.toString(),
                 edPrice.text.toString(),
                 edDescription.text.toString(),
                 dbManager.db.push().key)

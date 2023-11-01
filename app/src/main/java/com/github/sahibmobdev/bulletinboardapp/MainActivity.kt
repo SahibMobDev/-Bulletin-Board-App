@@ -1,7 +1,6 @@
 package com.github.sahibmobdev.bulletinboardapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -9,9 +8,14 @@ import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sahibmobdev.bulletinboardapp.activities.EditAdsAct
+import com.github.sahibmobdev.bulletinboardapp.adapters.AdsRcAdapter
+import com.github.sahibmobdev.bulletinboardapp.data.Advert
 import com.github.sahibmobdev.bulletinboardapp.database.DbManager
+import com.github.sahibmobdev.bulletinboardapp.database.ReadDataCallback
 import com.github.sahibmobdev.bulletinboardapp.databinding.ActivityMainBinding
 import com.github.sahibmobdev.bulletinboardapp.dialoghelper.DialogConst.SIGN_IN_STATE
 import com.github.sahibmobdev.bulletinboardapp.dialoghelper.DialogConst.SIGN_UP_STATE
@@ -23,18 +27,20 @@ import com.google.android.material.navigation.NavigationView.OnNavigationItemSel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, ReadDataCallback {
     lateinit var binding: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
-    val dbManager = DbManager()
+    val dbManager = DbManager(this)
     lateinit var tvAccount: TextView
+    val adapter = AdsRcAdapter()
 
-        override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        initRecyclerView()
         dbManager.readDataFromDb()
     }
 
@@ -75,7 +81,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     private fun init() {
         setSupportActionBar(binding.mainContent.myToolbar)
         binding.apply {
-            val toggle = ActionBarDrawerToggle(this@MainActivity,drawerLayout,mainContent.myToolbar,R.string.open, R.string.close)
+            val toggle = ActionBarDrawerToggle(
+                this@MainActivity,
+                drawerLayout,
+                mainContent.myToolbar,
+                R.string.open,
+                R.string.close
+            )
             drawerLayout.addDrawerListener(toggle)
             toggle.syncState()
             navView.setNavigationItemSelectedListener(this@MainActivity)
@@ -83,29 +95,44 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         }
     }
 
+    private fun initRecyclerView() {
+        binding.apply {
+            mainContent.rcView.layoutManager =
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+            mainContent.rcView.adapter = adapter
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.id_my_ads -> {
                 Toast.makeText(this, "id_my_ads", Toast.LENGTH_SHORT).show()
             }
+
             R.id.id_car -> {
                 Toast.makeText(this, "id_car", Toast.LENGTH_SHORT).show()
             }
+
             R.id.id_pc -> {
                 Toast.makeText(this, "id_pc", Toast.LENGTH_SHORT).show()
             }
+
             R.id.id_smartphone -> {
                 Toast.makeText(this, "id_smartphone", Toast.LENGTH_SHORT).show()
             }
+
             R.id.id_dm -> {
                 Toast.makeText(this, "id_dm", Toast.LENGTH_SHORT).show()
             }
+
             R.id.id_sign_up -> {
                 dialogHelper.createSignDialog(SIGN_UP_STATE)
             }
+
             R.id.id_sign_in -> {
                 dialogHelper.createSignDialog(SIGN_IN_STATE)
             }
+
             R.id.id_sign_out -> {
                 uiUpdate(null)
                 mAuth.signOut()
@@ -123,5 +150,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         } else {
             user.email
         }
+    }
+
+    override fun readData(list: List<Advert>) {
+        adapter.updateAdapter(list)
     }
 }

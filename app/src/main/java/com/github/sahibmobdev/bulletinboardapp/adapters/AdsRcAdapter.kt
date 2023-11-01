@@ -35,6 +35,7 @@ class AdsRcAdapter : RecyclerView.Adapter<AdsRcAdapter.AdHolder>() {
             binding.apply {
                 tvDescription.text = ad.description
                 tvPrice.text = ad.price
+                tvTitle.text = ad.title
             }
         }
     }
