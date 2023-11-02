@@ -11,4 +11,9 @@
     <style name="ActionBarCustom">
         <item name="android:textColorSecondary">@color/green_mine</item>
     </style>
+
+    <style name="ToolbarMainStyle" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorControlNormal">@color/green_mine</item>
+        <item name="fontFamily">sans-serif-condensed-medium</item>
+    </style>
 </resources>
