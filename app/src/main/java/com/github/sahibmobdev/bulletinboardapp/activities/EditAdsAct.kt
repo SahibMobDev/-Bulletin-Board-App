@@ -4,11 +4,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
-import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import com.github.sahibmobdev.bulletinboardapp.R
 import com.github.sahibmobdev.bulletinboardapp.adapters.ImageAdapter
@@ -19,7 +18,6 @@ import com.github.sahibmobdev.bulletinboardapp.dialogs.DialogSpinnerHelper
 import com.github.sahibmobdev.bulletinboardapp.fragments.FragmentCloseInterface
 import com.github.sahibmobdev.bulletinboardapp.fragments.ImageListFragment
 import com.github.sahibmobdev.bulletinboardapp.utils.CityHelper
-import com.github.sahibmobdev.bulletinboardapp.utils.ImageManager
 import com.github.sahibmobdev.bulletinboardapp.utils.ImagePicker
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
@@ -30,6 +28,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     private val dbManager = DbManager(null)
     val imageAdapter: ImageAdapter by lazy { ImageAdapter() }
     var editImagePos = 0
+    var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
+    var launcherSingleSelectImage: ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,24 +38,17 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         init()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        ImagePicker.showSelectedImages(resultCode, requestCode, data, this)
-
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
 
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
+                    //ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
                 } else {
 
                     Toast.makeText(
@@ -67,10 +60,13 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 return
             }
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun init() {
         binding.vpImages.adapter = imageAdapter
+        launcherMultiSelectImage = ImagePicker.getLauncherForMultiSelectImages(this)
+        launcherSingleSelectImage = ImagePicker.getLauncherForSingleImages(this)
     }
 
     //OnClicks
@@ -102,7 +98,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     fun onClickGetImages(view: View) {
         val list = imageAdapter.mainArray
         if (list.size == 0) {
-            ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
+            ImagePicker.launcher(this, launcherMultiSelectImage, 3)
         } else {
             openChooseImageFragment(null)
             chooseImageFrag?.updateAdapterFromEdit(list)
