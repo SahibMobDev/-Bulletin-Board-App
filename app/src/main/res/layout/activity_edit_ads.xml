@@ -309,7 +309,7 @@
                         android:background="@null"
                         android:ems="10"
                         android:hint="@string/price_hint"
-                        android:inputType="number"
+                        android:inputType="text|textPersonName"
                         android:padding="10dp"
                         android:textColorHint="@color/gray_dark" />
 
